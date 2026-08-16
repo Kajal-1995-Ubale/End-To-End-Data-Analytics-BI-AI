@@ -1,46 +1,27 @@
-# Current Skills Assessment
+# Skill Assessment
 
-## SQL
+## Assessment Method
 
-| Skill | Level |
-|---|---|
-| SELECT | Strong |
-| WHERE | Strong |
-| JOIN | Beginner |
-| GROUP BY | Intermediate |
-| CTE | Beginner |
-| Subquery | Beginner |
-| Window Functions | Beginner |
-| Query Optimization | Beginner |
+Skill levels are rated from 0 to 5.
 
-## Tableau
+0 = Never Used
+1 = Beginner
+2 = Basic
+3 = Intermediate
+4 = Advanced
+5 = Production Experience
 
-| Skill | Level |
-|---|---|
-| Dashboard Development | Strong |
-| Calculated Fields | Intermediate |
-| LOD | Intermediate |
-| Parameters | Intermediate |
-| Sets | Intermediate |
-| Tableau Server | Intermediate |
-| Performance Optimization | Beginner |
+## Current Skill Assessment
 
-## Python
-
-| Skill | Level |
-|---|---|
-| Python Basics | Intermediate |
-| Pandas | Beginner |
-| Data Cleaning | Beginner |
-| EDA | Beginner |
-
-## Data Engineering
-
-| Skill | Level |
-|---|---|
-| Data Modeling | Beginner |
-| Data Warehouse | Beginner|
-| ETL | Beginner |
-| dbt | Beginner |
-| Airflow | Beginner |
-| BigQuery | Beginner |
+| Skill | Level | Gap |
+|---|---:|---|
+| SQL | 2.5/5 | Advanced SQL |
+| Data Modeling | 1.5/5 | Major |
+| Data Warehouse | 2/5 | Major |
+| Data Cleaning | 1/5 | Major |
+| Python | 0/5 | Major |
+| dbt | 0/5 | New |
+| Airflow | 0/5 | New |
+| BigQuery | 1/5 | Major |
+| Tableau Desktop | 4+/5 | Maintain |
+| Tableau Server | 4/5 | Maintain |

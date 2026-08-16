@@ -1,0 +1,92 @@
+# Skill Assessment
+
+## Assessment Method
+
+Skill levels are rated from 0 to 5.
+
+0 = Never Used
+1 = Beginner
+2 = Basic
+3 = Intermediate
+4 = Advanced
+5 = Production Experience
+
+## Current Skill Assessment
+
+| Skill | Level | Gap |
+|---|---:|---|
+| SQL | 2.5/5 | Advanced SQL |
+| Data Modeling | 1.5/5 | Major |
+| Data Warehouse | 2/5 | Major |
+| Data Cleaning | 1/5 | Major |
+| Python | 0/5 | Major |
+| dbt | 0/5 | New |
+| Airflow | 0/5 | New |
+| BigQuery | 1/5 | Major |
+| Tableau Desktop | 4+/5 | Maintain |
+| Tableau Server | 4/5 | Maintain |
+
+## Mini Assessment 
+-- Architecture Review 
+CSV
+ ↓
+Staging
+ ↓
+Data Warehouse
+ ↓
+Fact + Dimension
+ ↓
+Data Mart
+ ↓
+Tableau
+ ↓
+Tableau Server
+ ↓
+Business User
+
+1. CSV - CSV is a source data file containing raw business data extracted from a source system or operational process.
+Example - Sales.csv, Customer.csv, Employee.csv
+
+2. Staging - The staging layer is an intermediate layer where source data is landed and prepared for downstream transformation, while keeping close traceability to the source.
+Example - No change in this layer, light transformation and standardization happens
+
+3. Datawarehouse - A centralized repository designed to store integrated, historical and analytics-ready business data.
+ETL हा data warehouse populate करण्याचा process आहे.
+
+Source
+ ↓
+ETL / ELT
+ ↓
+Data Warehouse
+
+म्हणून:
+
+❌ Data Warehouse = Performing ETL
+
+✅ ETL/ELT → loads/transforms data into the Data Warehouse
+
+4. Fact + Dimension - Creating Star Schema
+Fact- Business event + measurable values.
+Example - sales_amount, quantity, discount, cost.
+Dimension - Business context.
+Example - customer, product, store, date.
+
+5. Data Mart - A subject-oriented subset/layer of data designed for a specific business function or analytical use case.
+Example - Enterprise DWH
+      ↓
+ ┌────┼─────┐
+ ↓    ↓     ↓
+Sales Finance Marketing
+ Mart   Mart    Mart
+
+6. Tableau - Dashboard Development 
+
+7. Tableau Server - Deployment 
+Tableau Server is the platform used to publish, manage, secure, refresh and distribute Tableau content to users.
+
+8. Business user - stakeholders who use the dashboard and make decisions
+
+------------------------------------------------------------------------------------------------------------------------------------
+Source → Staging → Transformation → Warehouse → Modeling → Data Mart → Tableau → Business
+------------------------------------------------------------------------------------------------------------------------------------
+

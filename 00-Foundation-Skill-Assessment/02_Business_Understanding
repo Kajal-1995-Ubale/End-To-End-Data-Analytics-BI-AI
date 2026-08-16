@@ -1,0 +1,213 @@
+# Business Understanding
+-------------------------------------
+-------------------------------------
+
+## 1. Company Overview
+Company Name : RetailMart Pvt. Ltd
+Business : Nationwide retail chain with multiple stores, customers, products and daily sales transactions.
+Current problem: 
+- Manual work
+- Duplicate data
+- Data Inconsistency
+- Delayed Reporting
+- Difficult comparison 
+- No centralized dashboards
+------------------------------------------------------
+## 2. Business Problem
+RetailMart currently relies on manually prepared Excel Reports from multiple teams and sources
+This results in:
+- High Manual Efforts
+- Inconsistent business logic
+- Duplicate reporting
+- Delayed report genereation
+- Difficult period/store/product Comparisons
+- Lack of Centralized Reporting
+- Delayed Business Decisions
+--------------------------------------------------------------
+## 3. Current Reporting Process
+Manual Excel Reports
+-------------------------------------------------------------
+## 4. Current Challenges
+- High Manual Efforts
+- Inconsistent business logic
+- Duplicate reporting
+- Delayed report genereation
+- Difficult period/store/product Comparisons
+- Lack of Centralized Reporting
+- Delayed Business Decisions
+----------------------------------------------------------------
+## 5. Business Objective
+Build a centralized analytics platform that provides trusted, consistent and timely business insights to stakeholders.
+-------------------------------------------------------
+## 6. Stakeholders
+### Business Stakeholders
+CEO - overall business performance
+CFO 
+Sales Manager - store/product/sales performance
+Finance Manager - Revenue/profit
+Inventory Manager - stock availability 
+Store Manager
+Regional Manager
+
+### Technical Stakeholders
+Data Analyst
+BI Developer - Dashboard Development
+Data Engineer - Data Pipeline
+Database Developer
+IT/Infrastructure Team
+---------------------------------------------------------------
+## 7. Business Questions
+
+### Sales
+1. What is total sales/revenue?
+2. What is daily sales?
+3. What is monthly sales?
+4. How does current year compare with previous year?
+5. What is month-over-month growth?
+6. Which stores generate the highest revenue?
+
+### Product
+7. What are the top-selling products?
+8. What is product quantity sold?
+9. which products are underperforming?
+
+### Customer
+10. How many customer placed orders?
+11. Who are the top 5 customers?
+12. How many repeat customers are there?
+
+### Inventory
+13. How much stock is remaining?
+14. Which products are low in stock?
+
+### Profitability
+15. What is total profit?
+16. What is profit margin?
+17. Which products/stores generate the highest profit?
+-----------------------------------------------------------------------------
+## 8. Key KPIs
+### Executive KPIs
+- Total Sales
+- Total Profit
+- Profit Margin % 
+- Total Orders
+- Total Customers
+- Total Quantity Sold
+- Average Order Value
+- Sales Growth % 
+- Profit Growth % 
+- Return Rate % 
+
+### Customer KPIs
+- Total Customers
+- Active Customers
+- Repeat Customers
+- New Customers
+- Customer Revenue
+-- Average Customer Value
+
+### Product KPIs
+- Total Products
+- Unit Solds
+- Product Revenue
+- Product Profit
+- Top Product
+- Low Performing Products
+
+### Inventory KPIs
+- Available Stock
+- Low Stock Products
+- Out of Stock Products
+- Inventory Value
+- Stock Turnover
+
+### Store KPIs
+- Store Sales
+- Store Profit
+- Orders per Store
+- Average Order Value
+- Store Growth %
+---------------------------------------------------------------------------------
+## 9. Data Sources
+ERP
+ ↓
+Products
+Inventory
+Stores
+Finance
+.....................
+CRM
+ ↓
+Customers
+Customer interactions
+.........................
+Sales Database
+ ↓
+Orders
+Sales transactions
+.............................
+API
+ ↓
+External information
+..............................
+For initial implementation : 
+customers.csv
+products.csv
+stores.csv
+employees.csv
+sales.csv
+returns.csv
+inventory.csv
+-----------------------------------------------------
+## 10. Expected Solution
+Multiple Sources
+       ↓
+Data Ingestion
+       ↓
+Staging
+       ↓
+Data Cleaning
+       ↓
+Data Transformation
+       ↓
+Centralized Data Warehouse
+       ↓
+Fact + Dimension Model
+       ↓
+Sales / Finance Data Mart
+       ↓
+Tableau
+       ↓
+Tableau Server
+       ↓
+Business Users
+
+.......................................................
+Before : 
+Multiple Excel files
+       ↓
+Manual processing
+       ↓
+Different calculations
+       ↓
+Different reports
+       ↓
+Delayed decisions
+
+After: 
+Centralized Data
+       ↓
+Standardized Business Logic
+       ↓
+Trusted KPIs
+       ↓
+Centralized Tableau Dashboard
+       ↓
+Faster Decisions
+-----------------------------------------------------------------------
+
+## 11. Expected Business Benefits
+Build a centralized end-to-end analytics platform that integrates business data, standardizes data and KPI definitions, and provides interactive Tableau dashboards for faster and more reliable decision-making.
+"The goal is not just centralized data; it is centralized, governed and trusted business logic."
+
+## 12. Success Criteria

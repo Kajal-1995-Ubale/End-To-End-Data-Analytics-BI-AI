@@ -1,1 +1,38 @@
 
+# Phase 1 — SQL & Data Foundations
+
+## Objective
+
+Build strong SQL and data foundation skills using the RetailMart
+end-to-end analytics project.
+
+## Architecture
+
+Source
+↓
+Bronze
+↓
+Silver
+↓
+Gold
+↓
+Mart
+↓
+Tableau
+
+## Day 1
+
+Topics:
+- Database
+- Schema
+- Bronze layer
+- Silver layer
+- Gold layer
+- Data Mart
+- Grain
+- Measures
+- Derived metrics
+
+## Project
+
+RetailMart Enterprise Sales Analytics Platform

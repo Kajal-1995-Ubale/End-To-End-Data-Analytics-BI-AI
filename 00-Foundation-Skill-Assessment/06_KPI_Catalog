@@ -1,0 +1,284 @@
+🚀 KPI - Key Performance Indicator
+----------------------------------
+A KPI is a measurable value used to evaluate business performance against a specific objective.
+Not every metric is necessarily a KPI.
+For Example.
+Quantity Sold is a metric
+But, Sales Growth % could be KPI used by management to evaluate performance.
+
+-------------------------------------------------------------------------------
+🚀 Metric vs KPI
+Metric
+A Measurement
+Example : total orders = 10,000
+
+KPI
+A measurement tied to a business objective.
+Example: Sales Growth = +12%
+The KPI tells management whether performance is improving or declining
+
+----------------------------------------------------------------------------------
+🚀 why KPI Definition is Critical
+Remember your Day 2 Problem: Different users use different logic
+This is exactly why we need a KPI Definition 
+Suppose sales team says:
+Revenue = Gross Sales
+Finance says:
+Revenue = Gross Sales - Returns
+Dashboard Says: 
+Revenue = Sales - Discount
+
+Now we have three numbers
+This destroys trust in the dashboard.
+-- Therefore Every important KPI should have agreed business definition 
+
+------------------------------------------------------------------------------------
+🚀 KPI Definition Template
+
+For every KPI, document:
+
+KPI Name
+Business Definition
+Formula
+Business Purpose
+Data Source
+Grain
+Filters
+Owner
+Refresh Frequency
+
+Example:
+KPI : Total Sales
+Business Definition : Total value of sales generated during the selected period
+Formula : SUM(Sales_Amount)
+Business Purpose : Measure overall sales performance
+Data Source : fact_Sales
+Dashboard usage : Executive Dashboard, Sales Dashboard, Store Dashboard
+
+--------------------------------------------------------------------------------------------
+🚀 RETAILMART CORE KPIs
+***************************
+KPI 1 - Total Sales
+Definition - Total sales generated during the selected period
+Formula : Total Sales = SUM(Sales_amount)
+-----------------------------------------------------------------
+KPI 2 - Total Orders
+Definition - Number of unique customer orders/transactions
+Depending on the data model
+Total orders = COUNT(DISTINCT order_id) 
+
+Important
+Don't automatically use:
+
+COUNT(*)
+because one order can contain multiple products.
+
+Example:
+Order 1001 → Product A
+Order 1001 → Product B
+Order 1001 → Product C
+
+There are:
+3 rows
+1 order
+
+Therefore:
+COUNT(*) = 3
+COUNT(DISTINCT order_id) = 1
+
+This is a very common interview issue.
+-------------------------------------------------------------------
+KPI 3 — Quantity Sold
+Quantity Sold = SUM(quantity)
+
+Example:
+Product A → 10
+Product B → 20
+Product C → 15
+Total Quantity = 45
+
+--------------------------------------------------------------
+KPI 4 — Total Profit
+Total Profit =
+SUM(sales_amount - cost_amount)
+
+Or, if profit_amount already exists:
+
+Total Profit = SUM(profit_amount)
+Important architecture decision
+
+Prefer defining the business logic consistently in the governed transformation/modeling layer rather than calculating the same KPI differently in every Tableau workbook.
+---------------------------------------------------------------------
+KPI 5 — Profit Margin %
+Profit Margin % =
+Total Profit / Total Sales × 100
+
+Example:
+Sales  = ₹10,00,000
+Profit = ₹2,00,000
+
+Profit Margin = 2,00,000 / 10,00,000 × 100
+= 20%
+
+-----------------------------------------------------------------------
+KPI 6 — Average Order Value
+
+AOV is extremely useful in retail.
+
+AOV = Total Sales / Total Orders
+
+Example:
+Sales = ₹10,00,000
+Orders = 5,000
+
+AOV = ₹200
+
+It answers: How much does the average customer order generate?
+--------------------------------------------------------------------------------
+KPI CATALOGUE
+
+| KPI                 | Formula                       | Business Purpose                  |
+| ------------------- | ----------------------------- | --------------------------------- |
+| Total Sales         | `SUM(sales_amount)`           | Measure revenue/sales performance |
+| Total Orders        | `COUNT(DISTINCT order_id)`    | Measure transaction volume        |
+| Quantity Sold       | `SUM(quantity)`               | Measure units sold                |
+| Total Profit        | `SUM(profit_amount)`          | Measure profitability             |
+| Profit Margin %     | Profit / Sales × 100          | Measure profitability efficiency  |
+| AOV                 | Sales / Orders                | Measure average transaction value |
+| Sales Growth %      | Current vs Previous           | Measure growth                    |
+| Return Rate %       | Returns / Orders × 100        | Monitor returns                   |
+| Customer Count      | `COUNT(DISTINCT customer_id)` | Measure customer base             |
+| Repeat Customer %   | Repeat / Total × 100          | Measure customer loyalty          |
+| Inventory Available | `SUM(stock_quantity)`         | Monitor stock                     |
+| Stock-Out Rate %    | OOS / Active Products × 100   | Monitor availability              |
+
+-------------------------------------------------------------------------------------------------------------
+🚀 Grain
+
+Grain means: What does one row represent?
+
+For example:
+fact_sales
+
+If one row represents:
+One product line within one order
+
+then:
+Order 1001
+Product A
+is one row.
+
+And:
+
+Order 1001
+Product B
+is another row.
+
+So:
+Grain = One product line per order.
+
+Why Grain Matters
+
+Suppose:
+
+Order 1001
+Product A → ₹500
+Product B → ₹300
+
+If you don't understand the grain, you might incorrectly calculate:
+
+Orders = COUNT(*)
+Result:
+2
+But actual orders:
+1
+
+Correct:
+COUNT(DISTINCT order_id)
+
+Understanding grain will become extremely important when we start:
+
+SQL
+Joins
+Fact tables
+Aggregations
+Tableau relationships
+Data modeling
+
+--------------------------------------------------------------------------------------
+🚀 Architecture Thinking
+
+Now your thought process should become:
+
+Don't ask only:
+
+"What columns are in the table?"
+
+Ask:
+
+What is the source?
+       ↓
+What does each row represent?
+       ↓
+What does each column mean?
+       ↓
+What are the relationships?
+       ↓
+What business rules apply?
+       ↓
+Which KPIs can be calculated?
+
+That is Data Analyst thinking.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,149 @@
+🚀 Day 4: Data Sources 
+Never start building SQL queries or Tableau Dashboards before understanding the source data, its meaning and the business definitions of KPIs
+For our RetailMart Project: 
+1. Understand where data comes from 
+2. Build a Data Dictionary 
+3. Define KPIs using clear business logic
+---------------------------------------------------------------------------------------
+🚀 WHERE WE ARE IN THE ARCHITECTURE
+Yesterday We learned: 
+Business Requirement
+        ↓
+Source Systems
+        ↓
+Ingestion
+        ↓
+Raw
+        ↓
+Staging
+        ↓
+Cleaning
+        ↓
+Transformation
+        ↓
+Data Warehouse
+        ↓
+Fact + Dimension
+        ↓
+Data Mart
+        ↓
+Tableau
+        ↓
+Tableau Server
+        ↓
+Business User
+
+Today we focus mainly on:
+
+                 SOURCE SYSTEMS
+                       ↓
+                DATA SOURCES
+                       ↓
+              DATA DICTIONARY
+                       ↓
+                KPI DEFINITION
+
+----------------------------------------------------------------------------------------------------
+🚀 What is a Data Source?
+A data source is the system, file, application, database or API from which data originates
+Common data sources in real organization
+1. ERP
+2. CRM
+3. POS
+4. SQL Database
+5. Excel
+6. CSV
+7. API
+8. Cloud Applications
+9. Web Applications
+
+For Example: 
+RetailMart
+             RetailMart
+                  │
+       ┌──────────┼──────────┐
+       ↓          ↓          ↓
+      ERP        CRM        POS
+       │          │          │
+       ↓          ↓          ↓
+ Inventory    Customers    Sales
+ Products
+ Finance
+
+---------------------------------------------------------------------------------------------------------
+🚀 Source System vs Analytics System 
+This distinction is important
+Operational / Source System - Designed to run the business
+Example: 
+POS → records sales
+CRM → manages customers
+ERP → manages business operations
+
+Analytical System - Designed to analyze the business
+Example:
+BigQuery
+Data Warehouse
+Data Mart
+Tableau
+
+so 
+Operational Systems
+        ↓
+       Data
+        ↓
+Analytics Platform
+        ↓
+     Insights
+        ↓
+     Decisions
+
+-----------------------------------------------------------------------------------------------------
+🚀 RetailMart Data Sources
+***************************
+| Source         | Data                 | Example                   |
+| -------------- | -------------------- | ------------------------- |
+| POS            | Sales transactions   | Orders, quantity, amount  |
+| CRM            | Customer information | Name, city, segment       |
+| ERP            | Products             | Product, category, price  |
+| ERP            | Inventory            | Stock quantity            |
+| ERP            | Stores               | Store information         |
+| HR             | Employees            | Employee/store assignment |
+| Returns system | Returns              | Returned products/orders  |
+
+For our portfolio project, we'll represent these through CSV files.
+data/
+│
+├── customers.csv
+├── products.csv
+├── stores.csv
+├── employees.csv
+├── sales.csv
+├── returns.csv
+├── inventory.csv
+├── targets.csv
+└── budget.csv
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

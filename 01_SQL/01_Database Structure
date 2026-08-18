@@ -1,0 +1,348 @@
+DAY1 - SQL Environment + RetailMart Database Structure
+-------------------------------------------------------
+1. First understand the Target Architecture
+*******************************************
+Our RetailMart analytical database will eventually look approximately like this:
+
+RetailMart Analytics Database
+│
+├── bronze
+│   └── Raw source data
+│
+├── silver
+│   └── Cleaned / standardized data
+│
+├── gold
+│   ├── Fact tables
+│   └── Dimension tables
+│
+└── mart
+    └── Business-ready analytical views
+-------------------------------------------------------
+
+2. RetailMart Database
+*************************
+Create
+CREATE DATABASE RetailMart_Analytics;
+Then connect to 
+RetailMart_Analytics
+
+------------------------------------------------------
+3. Schemas
+***********
+1. We'll create four schemas
+bronze
+silver
+gold
+mart
+
+1. bronze
+Contains source data with minimal modification
+bronze
+│
+├── sales
+├── customers
+├── products
+├── stores
+├── employees
+├── returns
+└── inventory
+
+2. silver
+Cleaned and stadardized data
+silver
+│
+├── sales
+├── customers
+├── products
+├── stores
+├── employees
+├── returns
+└── inventory
+
+3.Gold - 
+Dimensional model
+gold
+│
+├── dim_customer
+├── dim_product
+├── dim_store
+├── dim_employee
+├── dim_date
+│
+├── fact_sales
+├── fact_returns
+└── fact_inventory
+
+4. Mart
+Business ready dataset
+mart
+│
+├── sales_summary
+├── customer_performance
+├── product_performance
+├── store_performance
+└── inventory_summary
+--------------------------------------------------------------------------------------------
+4. Why Are We Separating Schemas?
+************************************
+
+Imagine everything is in one schema:
+
+dbo
+│
+├── sales
+├── customers
+├── dim_customer
+├── fact_sales
+├── sales_dashboard
+├── cleaned_sales
+├── raw_sales
+└── ...
+
+Very quickly it becomes difficult to understand:
+
+Which table is raw?
+Which table is cleaned?
+Which table should Tableau use?
+
+Schemas give us organization.
+
+bronze → Raw
+silver → Clean
+gold   → Analytical Model
+mart   → Business Consumption
+
+-----------------------------------------------------------------------------
+5. Create the Schemas
+**************************
+
+If you're using SQL Server:
+
+CREATE SCHEMA bronze;
+GO
+
+
+CREATE SCHEMA silver;
+GO
+
+
+CREATE SCHEMA gold;
+GO
+
+
+CREATE SCHEMA mart;
+GO
+
+Then verify:
+
+SELECT name
+FROM sys.schemas
+ORDER BY name;
+You should see the schemas.
+------------------------------------------------------------------------------
+6. Our First Table — Bronze Sales
+
+For now, we'll create a simplified raw table.
+
+CREATE TABLE bronze.sales
+(
+    order_id        INT,
+    customer_id     INT,
+    product_id      INT,
+    store_id        INT,
+    employee_id     INT,
+    order_date      DATE,
+    quantity        INT,
+    unit_price      DECIMAL(18,2),
+    discount_amount DECIMAL(18,2)
+);
+
+Notice something important.
+We aren't immediately adding:
+
+profit_amount
+sales_amount
+
+because raw data should represent what came from the source.
+Derived business values can be created later.
+
+----------------------------------------------------------------------------------
+7. Raw vs Derived Data
+
+Suppose source data contains:
+quantity = 2
+unit_price = 500
+discount = 50
+
+We can calculate:
+Gross Sales
+2 × 500 = 1000
+
+Then:
+Net Sales
+1000 - 50 = 950
+
+These are derived values.
+Conceptually:
+
+Raw Source
+│
+├── quantity = 2
+├── unit_price = 500
+└── discount = 50
+        ↓
+Transformation
+        ↓
+Gross Sales = 1000
+Net Sales   = 950
+
+This distinction becomes very important when we learn ETL/ELT and dbt.
+-----------------------------------------------------------------------------------------------------
+8. Insert Some Practice Data
+
+For Day 1, don't load 30,000 records.
+
+We'll use a tiny dataset so that you understand the structure.
+INSERT INTO bronze.sales
+(
+    order_id,
+    customer_id,
+    product_id,
+    store_id,
+    employee_id,
+    order_date,
+    quantity,
+    unit_price,
+    discount_amount
+)
+VALUES
+(1001, 501, 101, 10, 201, '2026-08-01', 2, 500, 50),
+(1001, 501, 102, 10, 201, '2026-08-01', 1, 800, 0),
+(1002, 502, 101, 11, 202, '2026-08-02', 3, 500, 100),
+(1003, 501, 103, 10, 203, '2026-08-03', 1, 1200, 200);
+--------------------------------------------------------------------------------------------
+9. Your First Query
+
+Run:
+SELECT *
+FROM bronze.sales;
+| order_id | customer_id | product_id | store_id | quantity | unit_price | discount |
+| -------: | ----------: | ---------: | -------: | -------: | ---------: | -------: |
+|     1001 |         501 |        101 |       10 |        2 |        500 |       50 |
+|     1001 |         501 |        102 |       10 |        1 |        800 |        0 |
+|     1002 |         502 |        101 |       11 |        3 |        500 |      100 |
+|     1003 |         501 |        103 |       10 |        1 |       1200 |      200 |
+--------------------------------------------------------------------------------------------------
+🔥 Notice the Grain
+
+Look at:
+
+order_id = 1001
+
+It appears twice.
+
+Why?
+
+Order 1001
+│
+├── Product 101
+└── Product 102
+
+Therefore:
+
+One row = one product line within an order.
+
+This is your fact_sales grain.
+
+This is exactly the concept we fixed before starting Phase 1.
+---------------------------------------------------------------------------------------
+
+10. Your First Business Calculation
+
+Calculate gross sales:
+
+SELECT
+    order_id,
+    product_id,
+    quantity,
+    unit_price,
+    quantity * unit_price AS gross_sales
+FROM bronze.sales;
+| order_id | product_id | quantity | unit_price | gross_sales |
+| -------: | ---------: | -------: | ---------: | ----------: |
+|     1001 |        101 |        2 |        500 |        1000 |
+|     1001 |        102 |        1 |        800 |         800 |
+|     1002 |        101 |        3 |        500 |        1500 |
+|     1003 |        103 |        1 |       1200 |        1200 |
+----------------------------------------------------------------------------------
+
+11. Calculate Net Sales
+
+Now:
+
+SELECT
+    order_id,
+    product_id,
+    quantity,
+    unit_price,
+    discount_amount,
+    quantity * unit_price AS gross_sales,
+    quantity * unit_price - discount_amount AS net_sales
+FROM bronze.sales;
+
+The calculation is:
+
+Net Sales
+=
+Quantity × Unit Price
+-
+Discount
+-------------------------------------------------------------------------
+12. Important Data Analytics Pattern
+
+You'll use this pattern constantly:
+
+SOURCE COLUMN
+     ↓
+TRANSFORMATION
+     ↓
+DERIVED METRIC
+
+Example:
+
+quantity
+   +
+unit_price
+   ↓
+gross_sales
+
+Then:
+
+gross_sales
+     -
+discount
+     ↓
+net_sales
+
+Then:
+
+net_sales
+cost
+     ↓
+profit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

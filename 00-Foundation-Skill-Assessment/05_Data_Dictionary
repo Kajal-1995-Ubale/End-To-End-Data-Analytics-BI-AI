@@ -1,0 +1,144 @@
+🚀 Day 5 : Data Dictionary
+---------------------------
+Why do we need a Data Dictionary?
+Imagine you receive: 
+Sales.csv
+with
+sale_id
+cst_id
+prd_id
+qty
+amt
+dt
+A new developer asks:
+What does amt mean?
+
+Is it:
+Gross Sales?
+Net Sales?
+Discount?
+Profit?
+Tax-inclusive amount?
+
+Without documentation, people start guessing.
+That's Dangerous
+-------------------------------------------------------------------------------------------
+🚀 WHAT is a DATA DICTIONARY?
+
+A Data Dictionanry is documentation that describes the structure and meaning of data.
+It typically contains:
+Column Name
+Data Type
+Description
+Business Meaning
+Nullable?
+Example
+Source
+Business Rule
+
+| Column       | Data Type | Description                 | Nullable | Example    |
+| ------------ | --------- | --------------------------- | -------- | ---------- |
+| sale_id      | INT       | Unique sales transaction ID | No       | 10001      |
+| customer_id  | INT       | Customer identifier         | No       | 501        |
+| product_id   | INT       | Product identifier          | No       | 101        |
+| sale_date    | DATE      | Date of sale                | No       | 2026-08-18 |
+| quantity     | INT       | Units sold                  | No       | 5          |
+| sales_amount | DECIMAL   | Net sales amount            | No       | 2500.00    |
+
+--------------------------------------------------------------------------------------------------------------
+🚀 A professional Data Dictionary should answer: 
+What?
+What does the column represent?
+
+Why?
+Why do we need it?
+
+Where?
+Which source system does it come from?
+
+How?
+How is it calculated?
+
+Rules?
+What validation/business rules apply?
+--------------------------------------------------------------------------------------------------------
+
+🚀 Example - Sales Data Dictionary
+
+| Column          | Type    | Business Meaning              | Example    |
+| --------------- | ------- | ----------------------------- | ---------- |
+| sale_id         | INT     | Unique transaction identifier | 10001      |
+| customer_id     | INT     | Customer who placed the order | 501        |
+| product_id      | INT     | Product sold                  | 101        |
+| store_id        | INT     | Store where sale occurred     | 10         |
+| employee_id     | INT     | Employee handling sale        | 205        |
+| sale_date       | DATE    | Date of transaction           | 2026-08-18 |
+| quantity        | INT     | Number of units sold          | 3          |
+| unit_price      | DECIMAL | Selling price per unit        | 500        |
+| discount_amount | DECIMAL | Discount given                | 50         |
+| sales_amount    | DECIMAL | Net sales value               | 1450       |
+| cost_amount     | DECIMAL | Cost of goods sold            | 900        |
+| profit_amount   | DECIMAL | Profit generated              | 550        |
+
+-------------------------------------------------------------------------------------------------
+🚀 Fact Vs Dimension Data Dictionary
+Fact table
+Example:
+fact_sales
+
+Contains:
+sale_id
+customer_key
+product_key
+store_key
+date_key
+quantity
+sales_amount
+discount_amount
+cost_amount
+profit_amount
+
+-----------------
+Dimension table
+
+Example:
+dim_product
+
+Contains:
+product_key
+product_id
+product_name
+category
+subcategory
+brand
+unit_cost
+selling_price
+
+The Data Dictionary should clearly identify the table type.
+-----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

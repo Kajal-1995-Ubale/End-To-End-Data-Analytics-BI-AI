@@ -1,0 +1,707 @@
+🚀 Day 3: Analytics Lifecycle & End-to-End Architecture
+------------------------------------------------------------
+--------------------------------------------------------------
+
+1. What is an Analytics Lifecycle?
+The Analytics Lifecycle is the complete journey of data from a business requirement to a business decision.
+For our RetailMart Project: 
+Business Requirement - Source Sytem - Data Ingestion - Raw/Landing Layer - Staging- Data Cleaning - Data Transformation - Data Warehouse - Data Modeling - Data Mart - Tableau - Tableau Server - Business Insights - Business Decisions
+---------------------------------------------------------------------------------------
+🚀 Step1- Business Requirement
+***************************
+Before touching SQL, Python, Tableau, or any other technology we need to understand 
+What problem does the business want to solve?
+For RetailMart: 
+Management wants a centralized analytics platform to monitor: 
+Sales, Revenue, Profit, Orders, Customers, Products, Stores, Inventory, Returns
+
+WHY: 
+Because the current Excel-based reporting process causes:
+1. Manual Efforts
+2. Different Calculation logic
+3. Data Inconsistency
+4. Delayed reporting
+5. Difficult comparisons
+6. No centralized view
+so the first step is always: 
+Business Problem
+       ↓
+Business Questions
+       ↓
+KPIs
+       ↓
+Data Requirements
+-----------------------------------------------------------------------------------
+🚀 Step2 - Source System
+**********************
+The Data originates from different systems
+In a real organization, sources can include.
+1. ERP
+2. CRM
+3. POS
+4. Operational Databases
+5. APIs
+6. Excel
+7. CSV
+8. Cloud Applications
+
+For RetailMart: 
+ERP
+ ├── Products
+ ├── Inventory
+ └── Finance
+
+CRM
+ └── Customers
+
+POS / Sales Database
+ └── Sales Transactions
+
+HR System
+ └── Employees
+For our initial project, we can simulate these sources using:
+
+customers.csv
+products.csv
+stores.csv
+employees.csv
+sales.csv
+returns.csv
+inventory.csv
+------------------------------------------------------------------------------------------------
+🚀 Step 3 - Data Ingestion
+***************************
+What is Data Ingestion?
+Data Ingestion is the process of moving data from source systems into an analytics
+environment
+
+For example:
+Sales Database
+      ↓
+   Ingestion
+      ↓
+Analytics Platform
+
+In later phases, you will see different ingestion mechanisms involving:
+Python
+APIs
+SQL
+Airflow
+Cloud services
+
+Remember: 
+Ingestion = Bringing data in.
+------------------------------------------------------------------------------------------------------------
+🚀 Step 4 - Raw/Landing Layer
+******************************
+After Ingestion, we often store the source data in a Raw or Landing Layer
+For example: 
+raw_sales
+raw_customers
+raw_products
+raw_stores
+raw_inventory
+The purpose is to maintain a representation of the data as received from the source.
+--
+Why is this useful?
+Suppose today's source file contains:
+Customer_ID = 101
+Sales_Date = "18-08-2026"
+Amount = "1250"
+
+If something goes wrong during transformation, we can go back to the raw data and investigate:
+"What exactly did the source send us?"
+This helps with:
+Traceability
+Auditing
+Debugging
+Reprocessing
+
+------------------------------------------------------------------------------------------------
+🚀 Step 5 - Staging Layer
+******************************
+Now we prepare the raw data for transformation.
+
+Example:
+raw_sales
+    ↓
+stg_sales
+The staging layer is an intermediate processing layer.
+
+Typical activities can include:
+1. Renaming columns
+2. Converting data types
+3. Standardizing formats
+4. Basic validation
+5. Removing obvious duplicates
+6. Handling basic formatting issues
+
+Example:
+
+Raw
+---
+sale_date = "18-08-2026"
+amount = "1,250.00"
+
+Staging
+-------
+sale_date = 2026-08-18
+amount = 1250.00
+
+Staging is an intermediate layer where source data is landed and prepared for downstream transformation while maintaining traceability to the source.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+🚀 Step 6- Data Cleaning
+******************************
+Now we identify and fix data-quality problems
+Typical problems:
+1. NULL values
+2. Duplicates
+3. Invalid dates
+4. Invalid IDs
+5. Incorrect data types
+6. Negative quantities
+7. Invalid prices
+8. Missing relationships
+9. Inconsistent names
+10. Outliers
+---------------------------------------------------------------------------------------------------------------------
+🚀 Step 7 - Data Transformation 
+*********************************
+Transformation means applying technical and business logic to convert cleaned data into analytics-ready information.
+Example:
+
+Suppose:
+
+Quantity = 5
+Unit Price = 100
+Discount = 10
+
+We calculate:
+
+Gross Sales = Quantity × Unit Price
+
+
+Gross Sales = 5 × 100
+            = 500
+
+
+Net Sales = Gross Sales - Discount
+
+
+Net Sales = 500 - 10
+          = 490
+
+This is a business transformation.
+
+Other transformations might include:
+Calculating revenue
+Calculating profit
+Standardizing categories
+Joining customer information
+Creating date attributes
+Creating business KPIs
+-----------------------------------------------------------------------------------------------------------------------------
+🚀 Step 8 - Data Warehouse
+*********************************
+A Data Warehouse is a centralized environment designed to store integrated, historical and analytics-ready business data.
+
+For RetailMart:
+
+RetailMart Data Warehouse
+│
+├── fact_sales
+├── fact_returns
+├── fact_inventory
+│
+├── dim_customer
+├── dim_product
+├── dim_store
+├── dim_employee
+└── dim_date
+Important correction from your previous answer
+You previously said:
+"Data Warehouse = Performing ETL"
+That's not quite correct.
+
+Correct:
+ETL / ELT
+    ↓
+Loads and transforms data
+    ↓
+Data Warehouse
+
+ETL/ELT is a process.
+
+Data Warehouse is a data storage/analytics environment.
+
+---------------------------------------------------------------------------------------------------------------
+🚀 Step 9 - Data Modeling
+*********************************
+Once data is in the analytical environment, we organize it into a model that supports reporting.
+
+For our RetailMart project, we'll use a Star Schema.
+
+                    DimCustomer
+                         |
+                         |
+DimProduct ------- FactSales ------- DimStore
+                         |
+                         |
+                      DimDate
+
+The central table is the Fact table.
+
+The surrounding tables are Dimension tables.
+
+-----------------------------------------------------------------------------------------------------------------------------
+🚀 Fact Table
+***************
+
+A Fact table usually represents a business event or measurable transaction.
+
+For example:
+fact_sales
+
+might contain:
+sale_id
+customer_key
+product_key
+store_key
+date_key
+quantity
+sales_amount
+discount
+cost
+profit
+
+The measures include:
+quantity
+sales_amount
+discount
+cost
+profit
+Simple definition
+
+Fact table = Business events + measurable values + keys to dimensions.
+----------------------------------------------------------------------------------------
+🚀 Dimension Table
+*******************
+Dimension tables provide the context around business events.
+
+Examples:
+
+dim_customer
+dim_product
+dim_store
+dim_date
+dim_employee
+-----------------
+dim_customer
+---------------
+customer_key
+customer_id
+customer_name
+city
+state
+segment
+
+--------------
+dim_product
+--------------
+product_key
+product_id
+product_name
+category
+subcategory
+brand
+Simple definition
+
+Dimension table = Descriptive information used to analyze facts.
+---------------------------------------------------------------------------------------------
+🚀 Data Mart
+*************
+Data Mart is a business-focused analytical layer designed for a specific subject area.
+
+For example:
+
+Enterprise Data Warehouse
+          │
+    ┌─────┼─────┐
+    ↓     ↓     ↓
+ Sales  Finance Inventory
+  Mart    Mart    Mart
+
+For our project:
+Sales Data Mart
+
+might focus on:
+Sales
+Products
+Customers
+Stores
+Dates
+
+Important correction
+You previously said:
+"Data Mart = Creating Views"
+A view can be part of a Data Mart, but a Data Mart is not simply a view.
+
+A Data Mart can contain:
+1. Tables
+2. Views
+3. Materialized views
+4. Aggregated tables
+5. Other analytical structures
+
+Interview definition
+A Data Mart is a subject-oriented analytical layer designed to serve a specific business function or reporting requirement.
+--------------------------------------------------------------------------------------------------------------------------------------
+🚀 Tableau
+*************
+
+Now we reach your existing area of expertise.
+
+Tableau consumes the prepared analytical data.
+
+Data Mart
+    ↓
+Tableau
+    ↓
+Worksheets
+    ↓
+Dashboard
+    ↓
+Insights
+
+For example:
+┌─────────────────────────────────────┐
+│       RETAIL SALES OVERVIEW         │
+├─────────┬─────────┬─────────────────┤
+│ Revenue │ Profit  │ Orders          │
+├─────────┴─────────┴─────────────────┤
+│                                     │
+│        Monthly Sales Trend           │
+│                                     │
+├───────────────────┬─────────────────┤
+│ Sales by State    │ Top Products    │
+├───────────────────┼─────────────────┤
+│ Store Performance │ Customer        │
+│                   │ Analysis        │
+└───────────────────┴─────────────────┘
+---------------------------------------------------------------
+🚀 Tableau Server
+*******************
+After development:
+Tableau Desktop
+       ↓
+Publish
+       ↓
+Tableau Server
+       ↓
+Business Users
+
+Tableau Server isn't only for deployment.
+It can provide:
+Workbook publishing
+Data source publishing
+User management
+Group management
+Permissions
+Data refresh schedules
+Subscriptions
+Alerts
+Governance
+Monitoring
+
+A good interview answer would be:
+"Tableau Server is used to publish, manage, secure, refresh and distribute Tableau content to business users."
+----------------------------------------------------------------------------------------------
+🚀 Business Insights
+*********************
+A dashboard isn't the final goal.
+
+The actual journey is:
+
+Data
+ ↓
+Information
+ ↓
+Insight
+ ↓
+Decision
+ ↓
+Action
+
+Example:
+
+Data
+Sales in Maharashtra decreased by 18%.
+
+Insight
+The decline is concentrated in one product category.
+
+Decision
+The regional manager investigates pricing and inventory.
+
+Action
+The company launches a promotion or adjusts inventory.
+
+That's the actual purpose of analytics.
+----------------------------------------------------------------------------------------------------
+🔥 Complete RetailMart Architecture
+                       BUSINESS REQUIREMENT
+                                │
+                                ↓
+                       BUSINESS QUESTIONS
+                                │
+                                ↓
+                              KPIs
+                                │
+                                ↓
+                         SOURCE SYSTEMS
+                                │
+                 ┌──────────────┼──────────────┐
+                 ↓              ↓              ↓
+                ERP            CRM          POS/DB
+                 │              │              │
+                 └──────────────┼──────────────┘
+                                ↓
+                         DATA INGESTION
+                                ↓
+                         RAW / LANDING
+                                ↓
+                            STAGING
+                                ↓
+                        DATA CLEANING
+                                ↓
+                       TRANSFORMATION
+                                ↓
+                       DATA WAREHOUSE
+                                ↓
+                       DATA MODELING
+                                ↓
+                       FACT + DIMENSIONS
+                                ↓
+                           DATA MART
+                                ↓
+                            TABLEAU
+                                ↓
+                        TABLEAU SERVER
+                                ↓
+                        BUSINESS USERS
+                                ↓
+                       BUSINESS DECISION
+
+This is the architecture you should eventually be able to draw and explain in an interview without looking at notes.
+-------------------------------------------------------------------------------------------------------------------------------
+🚀 Where dbt, Airflow and BigQuery Fit
+
+Later, our architecture becomes more modern:
+
+                    SOURCE SYSTEMS
+                          │
+                          ↓
+                    DATA INGESTION
+                          │
+                          ↓
+                       BIGQUERY
+                    Raw / Staging
+                          │
+                          ↓
+                         dbt
+                          │
+                          ↓
+                Fact + Dimension Models
+                          │
+                          ↓
+                     Data Marts
+                          │
+                          ↓
+                       Tableau
+                          │
+                          ↓
+                   Tableau Server
+
+And Airflow orchestrates the workflow:
+
+                       AIRFLOW
+                          │
+              ┌───────────┼───────────┐
+              ↓           ↓           ↓
+         Ingestion      dbt       Data Quality
+              │           │           │
+              └───────────┼───────────┘
+                          ↓
+                       BigQuery
+Easy way to remember
+
+BigQuery → Where analytical data lives
+
+dbt → How analytical data is transformed
+
+Airflow → How/when workflows are orchestrated
+
+You will learn each of these properly in later phases.
+
+----------------------------------------------------------------------------------------------------
+What You Need to Remember
+--------------------------
+| Layer                | Main Question                                     |
+| -------------------- | ------------------------------------------------- |
+| Business Requirement | What does the business need?                      |
+| Source               | Where does the data come from?                    |
+| Ingestion            | How do we bring the data in?                      |
+| Raw                  | What did the source provide?                      |
+| Staging              | How do we prepare the source data?                |
+| Cleaning             | Is the data correct and usable?                   |
+| Transformation       | How do we apply business logic?                   |
+| Data Warehouse       | Where do we store integrated analytical data?     |
+| Data Modeling        | How do we organize the data for analysis?         |
+| Data Mart            | What data does a specific business function need? |
+| Tableau              | How do we analyze and visualize it?               |
+| Tableau Server       | How do we publish, secure and distribute it?      |
+| Business User        | What decision will be made?                       |
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+🚀 AI PROMPT
+
+Give it this architecture:
+
+Source
+→ Ingestion
+→ Raw
+→ Staging
+→ Cleaning
+→ Transformation
+→ Data Warehouse
+→ Fact + Dimension
+→ Data Mart
+→ Tableau
+→ Tableau Server
+→ Business User
+
+Ask:
+
+"Act as a Senior Data Architect. Review this RetailMart analytics architecture. Identify missing components, potential risks, and improvements. Explain why each recommendation is important."
+------------------------------------------------
+**************************************************
+1. Recommended Production Architecture
+                         BUSINESS REQUIREMENTS
+                                  │
+                                  ↓
+                         KPI / BUSINESS LOGIC
+                                  │
+                                  ↓
+                           SOURCE SYSTEMS
+                                  │
+              ┌───────────────────┼──────────────────┐
+              ↓                   ↓                  ↓
+             ERP                 CRM                POS
+              │                   │                  │
+              └───────────────────┼──────────────────┘
+                                  ↓
+                         DATA INGESTION
+                                  │
+                            [Airflow]
+                                  │
+                                  ↓
+                         RAW / LANDING
+                                  │
+                                  ↓
+                            STAGING
+                                  │
+                           [dbt / SQL]
+                                  │
+                    ┌─────────────┴─────────────┐
+                    ↓                           ↓
+             DATA QUALITY                 DATA CLEANING
+                    │                           │
+                    └─────────────┬─────────────┘
+                                  ↓
+                         DATA WAREHOUSE
+                            [BigQuery]
+                                  │
+                                  ↓
+                       DATA MODELING
+                                  │
+                         ┌────────┴────────┐
+                         ↓                 ↓
+                    Fact Tables      Dimension Tables
+                         │                 │
+                         └────────┬────────┘
+                                  ↓
+                            DATA MART
+                                  │
+                                  ↓
+                        SEMANTIC / BI LAYER
+                                  │
+                                  ↓
+                              TABLEAU
+                                  │
+                                  ↓
+                         TABLEAU SERVER
+                                  │
+                  ┌───────────────┼───────────────┐
+                  ↓               ↓               ↓
+               CEO/CFO       Sales Manager   Finance Manager
+                                  │
+                                  ↓
+                         BUSINESS DECISIONS
+
+And around the entire platform:
+SECURITY + GOVERNANCE + MONITORING + METADATA
+-----------------------------------------------------------------------
+INTERVIEW QUESTIONS
+------------------------------------------------------------------------
+"We start by understanding the business requirements and defining standardized KPIs. 
+Data comes from multiple source systems such as ERP, CRM, POS, databases and APIs.
+We ingest the data into the analytics platform and maintain a raw layer for source traceability. 
+The data is then staged, cleaned and transformed using SQL/dbt. 
+The transformed data is stored in a cloud data warehouse such as BigQuery and modeled into fact and dimension tables following a star schema.
+Business-specific data marts are then created for analytical consumption.
+Tableau connects to these curated datasets to build dashboards, and Tableau Server is used to publish, secure, refresh and distribute the dashboards.
+Airflow orchestrates the pipeline, while data quality, governance, security, monitoring and lineage are applied across the platform. 
+The final objective is to provide trusted insights that help business users make faster and better decisions."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

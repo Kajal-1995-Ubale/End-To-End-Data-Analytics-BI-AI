@@ -1,0 +1,70 @@
+﻿TABLE,COLUMN,CHECK,Issue_Count,Total_Rows,ISSUE_PCT,Severity,Silver_Action
+customers,city,Missing value,609,30450,0.02,Low,"Flag NULL, allow load"
+customers,Customer_ID,Duplicate Primary key,450,30450,0.014778325,High,"Deduplicate on customer_id, keep most recent registration_date, log removed rows to quarantine"
+customers,customer_name,Leading/trailing whitespace,744,30450,0.024433498,Low,Trim whitespace; standardize to Title Case
+customers,customer_status,Inconsistent casing / whitespace,798,30450,0.026206897,Low,"Trim whitespace, standardize casing (Title Case) via mapping table"
+customers,date_of_birth,Inconsistent date format,6057,30450,0.198916256,Medium,Standardize all date formats to YYYY-MM-DD using multi-format parser; quarantine unparseable values
+customers,date_of_birth,Outlier — implausible age (<10 or >100),182,30450,0.005977011,High,Flag for manual review; exclude from active-customer KPIs until corrected
+customers,email,Invalid format (missing @ / domain),588,30450,0.019310345,Medium,Reject malformed emails to quarantine table; do not attempt auto-correction
+customers,email,Missing value,1218,30450,0.04,Medium,"Flag NULL; do not block load, route to Customer Data Steward for backfill"
+customers,gender,Inconsistent categorical values,871,30450,0.028604269,Low,"Standardize via mapping table (trim, upper-case compare) to Male / Female / Other"
+customers,phone_number,Invalid length / inconsistent format,5251,30450,0.172446634,Medium,"Strip non-numeric characters, standardize to 10-digit numeric string; quarantine if still invalid"
+customers,phone_number,Missing value,913,30450,0.02998358,Low,"Flag NULL, allow load (non-critical for core sales KPIs)"
+customers,registration_date,Future-dated value,152,30450,0.00499179,High,Reject rows with registration_date > current load date; route to exception queue
+customers,registration_date,Inconsistent date format,4550,30450,0.149425287,Medium,Standardize to YYYY-MM-DD using multi-format parser
+customers,state,Inconsistent format — abbreviation vs full name,356,30450,0.011691297,Low,Standardize all state values to full state name via lookup table
+customers,state,Missing value,609,30450,0.02,Low,"Flag NULL; infer from city where possible, else route to steward"
+employees,department,Missing value,303,30300,0.01,Low,Flag NULL; default to 'Unassigned' pending HR update
+employees,employee_id,Duplicate primary key,300,30300,0.00990099,High,"Deduplicate on employee_id, keep latest joining_date, log removed rows"
+employees,employee_name,Leading/trailing whitespace,1212,30300,0.04,Low,"Trim whitespace, standardize to Title Case"
+employees,employment_status,Inconsistent casing / formatting,981,30300,0.032376238,Low,"Trim, standardize casing via mapping table"
+employees,joining_date,Inconsistent date format,4545,30300,0.15,Medium,Standardize to YYYY-MM-DD using multi-format parser
+employees,joining_date,Missing value,454,30300,0.014983498,Low,"Flag NULL, allow load"
+employees,salary,Extreme outlier (>4 std dev above mean),90,30300,0.002970297,Medium,Flag for HR/Finance review; exclude from average-salary KPIs pending confirmation
+employees,salary,Missing value,909,30300,0.03,Medium,Flag NULL; exclude from payroll aggregation until backfilled
+employees,salary,Negative value,121,30300,0.003993399,High,Reject negative salary to quarantine; requires HR correction before load
+employees,store_id,Orphan foreign key (store not found),303,30300,0.01,High,Reject to quarantine; investigate against Stores master before load
+inventory,available_quantity,Consistency violation — available != stock - reserved,1616,30300,0.053333333,High,Recalculate available_quantity as stock - reserved during Silver transformation
+inventory,inventory_id,Duplicate primary key,300,30300,0.00990099,High,"Deduplicate on inventory_id, keep latest snapshot_date, log removed rows"
+inventory,inventory_status,Inconsistent / invalid categorical value,982,30300,0.032409241,Low,Standardize via mapping table; flag 'N/A'/'unknown' for review
+inventory,product_id,Orphan foreign key (product not found),303,30300,0.01,High,Reject to quarantine; investigate against Products master before load
+inventory,reorder_level,Missing value,606,30300,0.02,Low,Flag NULL; default to category-average reorder level pending correction
+inventory,reserved_quantity,Business rule violation — reserved > stock on hand,726,30300,0.023960396,High,Reject to quarantine; reconcile against order-management system before load
+inventory,snapshot_date,Future-dated value,121,30300,0.003993399,Medium,Reject rows with snapshot_date beyond current load date
+inventory,stock_quantity,Negative value,121,30300,0.003993399,High,Reject negative stock to quarantine; investigate against warehouse system
+inventory,store_id,Orphan foreign key (store not found),24224,30300,0.799471947,High,Reject to quarantine; investigate against Stores master before load
+products,brand,Missing value,909,30300,0.03,Low,Flag NULL; default to 'Unbranded' pending Merchandising update
+products,category,Missing value,454,30300,0.014983498,Medium,Flag NULL; exclude from category-level KPIs until corrected
+products,launch_date,Missing value,4327,30300,0.142805281,Low,"Flag NULL; expected for Inactive products, allow load"
+products,product_id,Duplicate primary key,300,30300,0.00990099,High,"Deduplicate on product_id, keep most recently launched record, log removed rows"
+products,product_name,Leading/trailing whitespace,1212,30300,0.04,Low,Trim whitespace
+products,product_status,Inconsistent casing / whitespace,0,30300,0,Low,"Trim whitespace, standardize casing via mapping table"
+products,selling_price,Negative value,90,30300,0.002970297,High,Reject negative price to quarantine
+products,unit_cost / selling_price,Business rule violation — cost > selling price,691,30300,0.022805281,High,Reject to quarantine; requires Pricing team correction before load
+returns,customer_id,Orphan foreign key (customer not found),242,30300,0.007986799,High,Reject to quarantine; investigate against Customers master before load
+returns,order_id,Orphan foreign key (order not found in Sales),303,30300,0.01,High,Reject to quarantine; investigate against Sales fact before load
+returns,product_id,Orphan foreign key (product not found),242,30300,0.007986799,High,Reject to quarantine; investigate against Products master before load
+returns,refund_amount,Business rule violation — refund > return_amount,454,30300,0.014983498,High,Reject to quarantine; requires Finance correction before load
+returns,refund_amount,Missing value,5893,30300,0.194488449,Medium,Flag NULL; exclude from refund KPIs until Finance confirms
+returns,return_id,Duplicate primary key,300,30300,0.00990099,High,"Deduplicate on return_id, keep single instance, log removed rows"
+returns,return_quantity,Negative value,121,30300,0.003993399,High,Reject negative return_quantity to quarantine
+returns,return_reason,Inconsistent casing / whitespace,0,30300,0,Low,"Trim whitespace, standardize casing via mapping table"
+returns,return_status,Inconsistent casing,0,30300,0,Low,"Trim, standardize casing via mapping table"
+sales,customer_id,Orphan foreign key (customer not found),242,30360,0.007971014,High,Reject to quarantine; investigate against Customers master before load
+sales,discount_amount,Business rule violation — discount > sales_amount,238,30360,0.007839262,High,Reject to quarantine; requires source-system correction
+sales,employee_id,Missing value,1234,30360,0.040645586,Low,"Flag NULL; allow load, attribute to 'Unknown Employee' for staffing KPIs"
+sales,employee_id,Orphan foreign key (employee not found),29126,30360,0.959354414,Medium,Flag for review; allow load but exclude from employee-performance KPIs
+sales,order_date,Future-dated value,211,30360,0.006949934,High,Reject rows with order_date beyond current load date
+sales,order_date,Inconsistent date format,4554,30360,0.15,Medium,Standardize to YYYY-MM-DD using multi-format parser
+sales,order_id (full row),Duplicate transaction row,217,30360,0.007147563,High,"Deduplicate on full row match, keep single instance, log removed rows"
+sales,product_id,Orphan foreign key (product not found),242,30360,0.007971014,High,Reject to quarantine; investigate against Products master before load
+sales,quantity,Negative value,91,30360,0.002997365,High,Reject negative quantity to quarantine; likely a return miscoded as a sale
+sales,sales_amount,Consistency violation — does not equal quantity x unit_price - discount,917,30360,0.030204216,High,Recalculate sales_amount during Silver transformation; do not trust source-calculated value
+sales,store_id,Orphan foreign key (store not found),242,30360,0.007971014,High,Reject to quarantine; investigate against Stores master before load
+sales,unit_price,Missing value,455,30360,0.014986825,Medium,Reject to quarantine; cannot derive sales_amount without unit_price
+stores,manager_id,Missing value,606,30300,0.02,Low,"Flag NULL; allow load, does not block store-level KPIs"
+stores,opening_date,Inconsistent date format,4545,30300,0.15,Medium,Standardize to YYYY-MM-DD using multi-format parser
+stores,square_feet,Negative / implausible value,151,30300,0.004983498,Medium,Reject non-positive values to quarantine; requires Facilities correction
+stores,state,Inconsistent format — abbreviation vs full name,469,30300,0.015478548,Low,Standardize all state values to full state name via lookup table
+stores,store_id,Duplicate primary key,300,30300,0.00990099,High,"Deduplicate on store_id, keep most recent record, log removed rows"
+stores,store_status,Inconsistent casing,0,30300,0,Low,"Trim, standardize casing via mapping table"

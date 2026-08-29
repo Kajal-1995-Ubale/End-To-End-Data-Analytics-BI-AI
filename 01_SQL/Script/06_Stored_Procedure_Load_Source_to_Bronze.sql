@@ -32,9 +32,12 @@ BEGIN
         BULK INSERT bronze.customers
         FROM 'D:\Data_Analyst_Bundle_Kit_By_Kajal\Retail_Mart_Project\Dataset\customers.csv'
         WITH (
-        FIRSTROW=2,
-        FIELDTERMINATOR =',',
-        TABLOCK
+         FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDQUOTE = '"',
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            TABLOCK
         );
         SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
@@ -46,10 +49,14 @@ BEGIN
         PRINT '>> Inserting Data Into: bronze.employee';
         BULK INSERT bronze.employee
         FROM 'D:\Data_Analyst_Bundle_Kit_By_Kajal\Retail_Mart_Project\Dataset\employees.csv'
-        WITH (
-        FIRSTROW=2,
-        FIELDTERMINATOR =',',
-        TABLOCK
+        WITH
+        (
+            FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDQUOTE = '"',
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            TABLOCK
         );
         SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
@@ -62,9 +69,12 @@ BEGIN
         BULK INSERT bronze.inventory
         FROM 'D:\Data_Analyst_Bundle_Kit_By_Kajal\Retail_Mart_Project\Dataset\inventory.csv'
         WITH (
-        FIRSTROW=2,
-        FIELDTERMINATOR =',',
-        TABLOCK
+        FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDQUOTE = '"',
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            TABLOCK
         );
         SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
@@ -77,9 +87,12 @@ BEGIN
         BULK INSERT bronze.products
         FROM 'D:\Data_Analyst_Bundle_Kit_By_Kajal\Retail_Mart_Project\Dataset\products.csv'
         WITH (
-        FIRSTROW=2,
-        FIELDTERMINATOR =',',
-        TABLOCK
+        FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDQUOTE = '"',
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            TABLOCK
         );
         SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
@@ -92,9 +105,12 @@ BEGIN
         BULK INSERT bronze.returns
         FROM 'D:\Data_Analyst_Bundle_Kit_By_Kajal\Retail_Mart_Project\Dataset\returns.csv'
         WITH (
-        FIRSTROW=2,
-        FIELDTERMINATOR =',',
-        TABLOCK
+        FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDQUOTE = '"',
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            TABLOCK
         );
         SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
@@ -107,9 +123,12 @@ BEGIN
         BULK INSERT bronze.sales
         FROM 'D:\Data_Analyst_Bundle_Kit_By_Kajal\Retail_Mart_Project\Dataset\sales.csv'
         WITH (
-        FIRSTROW=2,
-        FIELDTERMINATOR =',',
-        TABLOCK
+        FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDQUOTE = '"',
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            TABLOCK
         );
         SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
@@ -122,9 +141,12 @@ BEGIN
         BULK INSERT bronze.stores
         FROM 'D:\Data_Analyst_Bundle_Kit_By_Kajal\Retail_Mart_Project\Dataset\stores.csv'
         WITH (
-        FIRSTROW=2,
-        FIELDTERMINATOR =',',
-        TABLOCK
+        FORMAT = 'CSV',
+            FIRSTROW = 2,
+            FIELDQUOTE = '"',
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '0x0a',
+            TABLOCK
         );
         SET @end_time = GETDATE();
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
